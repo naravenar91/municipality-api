@@ -1,0 +1,22 @@
+services:
+  postgres-municipality:
+    image: postgres:15-alpine
+    container_name: postgres-municipality
+    environment:
+      POSTGRES_DB: municipality_db
+      POSTGRES_USER: municipality_user
+      POSTGRES_PASSWORD: municipality_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+    networks:
+      - municipality-net
+
+networks:
+  municipality-net:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,0 +1,26 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: municipality_user
+    password: municipality_password
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/municipality_db
+  hibernate-orm:
+    database:
+      generation: update # Esto hace que se ejecute el import.sql si las tablas cambian o se crean
+    sql-load-script: import.sql # Asegura que use este archivo
+    log:
+      sql: true
+
+  banner:
+    path: banner.txt # Si quieres cambiar el nombre o ruta del archivo
+    #enabled: false # Para desactivar el banner por completo
+
+mp:
+  openapi:
+    extensions:
+      smallrye:
+        info:
+          title: "Municipality API"
+          version: "1.0.0"
+          description: "API for the management of municipalities and municipal services that residents can choose when registering in this application"
