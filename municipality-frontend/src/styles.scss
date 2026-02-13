@@ -1,0 +1,68 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #fafafa;
+}
+
+.page-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-weight: 400;
+  }
+}
+
+.mat-mdc-table {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.actions-cell {
+  width: 120px;
+  text-align: right;
+}
+
+.mat-mdc-form-field {
+  margin-bottom: 8px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.stat-card {
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1;
+    margin: 8px 0;
+  }
+
+  .stat-label {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 0.875rem;
+  }
+}

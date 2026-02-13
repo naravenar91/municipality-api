@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  municipality-api:
+    image: municipality-api
+    build:
+      context: ../municipality-api
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8080:8080"
+    networks:
+      - municipality-net
+
+  municipality-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - municipality-api
+    networks:
+      - municipality-net
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel run
+    env_file:
+      - .env
+    networks:
+      - municipality-net
+    depends_on:
+      - municipality-frontend
+    restart: unless-stopped
+
+networks:
+  municipality-net:
+    driver: bridge
