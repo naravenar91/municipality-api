@@ -63,3 +63,67 @@ Método Endpoint Descripción
   "path": "/api/municipality/1"
 }
 ```
+
+## 🐳 Levantar el proyecto con Docker Compose
+
+El proyecto incluye backend (Quarkus), base de datos (PostgreSQL) y frontend (Angular) listos para ejecutar con Docker.
+
+### Requisitos
+* Docker y Docker Compose instalados
+
+### Pasos
+
+1. **Clonar el repositorio:**
+    ```bash
+    git clone https://github.com/naravenar91/municipality-api.git
+    cd municipality-api
+    git checkout disenio
+    ```
+
+2. **Levantar todos los servicios:**
+    ```bash
+    docker compose up -d --build
+    ```
+
+3. **Verificar que los contenedores estén corriendo:**
+    ```bash
+    docker compose ps
+    ```
+
+### Servicios disponibles
+
+| Servicio | Puerto | URL |
+|----------|--------|-----|
+| Frontend Angular | 4200 | http://localhost:4200 |
+| API Quarkus | 8080 | http://localhost:8080 |
+| Swagger UI | 8080 | http://localhost:8080/q/swagger-ui/ |
+| PostgreSQL | 5432 | localhost:5432 |
+
+El frontend incluye un proxy reverso con Nginx que redirige las peticiones `/api/*` al backend, por lo que toda la aplicacion funciona desde `http://localhost:4200`.
+
+### Detener los servicios
+```bash
+docker compose down
+```
+
+### Detener y eliminar datos persistentes
+```bash
+docker compose down -v
+```
+
+## 🖥️ Frontend (Angular)
+
+El frontend se encuentra en la carpeta `municipality-frontend/` y esta construido con:
+
+* **Angular 17+** (standalone components)
+* **Angular Material** para la interfaz
+* **Reactive Forms** con validacion
+
+### Paginas
+
+| Pagina | Ruta | Descripcion |
+|--------|------|-------------|
+| Dashboard | `/` | Resumen con conteo de entidades |
+| Municipalidades | `/municipalities` | Tabla con CRUD (crear/editar) |
+| Usuarios | `/users` | Tabla con creacion de usuarios |
+| Servicios | `/services` | Asociacion usuario-municipalidad |
