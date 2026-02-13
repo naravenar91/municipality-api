@@ -18,50 +18,8 @@ import { Municipality } from '../../core/models';
     MatInputModule,
     MatButtonModule,
   ],
-  template: `
-    <h2 mat-dialog-title>{{ data ? 'Editar' : 'Crear' }} Municipalidad</h2>
-    <mat-dialog-content>
-      <form [formGroup]="form" class="dialog-form">
-        <mat-form-field class="full-width">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName="name" placeholder="Ej: Concepción">
-          @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
-            <mat-error>El nombre es requerido</mat-error>
-          }
-          @if (form.get('name')?.hasError('minlength') && form.get('name')?.touched) {
-            <mat-error>Mínimo 3 caracteres</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Dirección</mat-label>
-          <input matInput formControlName="address" placeholder="Dirección de la municipalidad">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Región (ID)</mat-label>
-          <input matInput formControlName="region" type="number" placeholder="Ej: 8">
-          @if (form.get('region')?.hasError('required') && form.get('region')?.touched) {
-            <mat-error>La región es requerida</mat-error>
-          }
-        </mat-form-field>
-      </form>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancelar</button>
-      <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">
-        {{ data ? 'Actualizar' : 'Crear' }}
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [`
-    .dialog-form {
-      display: flex;
-      flex-direction: column;
-      min-width: 400px;
-      padding-top: 8px;
-    }
-  `],
+  templateUrl: './municipality-dialog.component.html',
+  styleUrl: './municipality-dialog.component.scss',
 })
 export class MunicipalityDialogComponent implements OnInit {
   private fb = inject(FormBuilder);

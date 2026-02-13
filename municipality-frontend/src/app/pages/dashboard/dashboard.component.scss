@@ -1,0 +1,20 @@
+.card-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: white;
+
+  &.municipalities { background: #3f51b5; }
+  &.users { background: #4caf50; }
+  &.services { background: #ff9800; }
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 300;
+  margin: 16px 0 8px;
+}

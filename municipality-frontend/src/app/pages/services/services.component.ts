@@ -27,65 +27,8 @@ import { ServiceDialogComponent, ServiceDialogData } from './service-dialog.comp
     MatProgressSpinnerModule,
     MatChipsModule,
   ],
-  template: `
-    <div class="page-container">
-      <div class="page-header">
-        <h1>Servicios</h1>
-        <button mat-fab extended color="primary" (click)="openDialog()">
-          <mat-icon>link</mat-icon>
-          Nueva Asociación
-        </button>
-      </div>
-
-      @if (loading) {
-        <div class="spinner-container">
-          <mat-spinner diameter="48"></mat-spinner>
-        </div>
-      } @else {
-        <table mat-table [dataSource]="services" class="mat-elevation-z2">
-          <ng-container matColumnDef="userId">
-            <th mat-header-cell *matHeaderCellDef>ID Usuario</th>
-            <td mat-cell *matCellDef="let row">{{ row.userId }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="muniId">
-            <th mat-header-cell *matHeaderCellDef>ID Municipalidad</th>
-            <td mat-cell *matCellDef="let row">{{ row.muniId }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="isActive">
-            <th mat-header-cell *matHeaderCellDef>Estado</th>
-            <td mat-cell *matCellDef="let row">
-              <mat-chip [highlighted]="row.isActive" [color]="row.isActive ? 'primary' : 'warn'">
-                {{ row.isActive ? 'Activo' : 'Inactivo' }}
-              </mat-chip>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="createdAt">
-            <th mat-header-cell *matHeaderCellDef>Creado</th>
-            <td mat-cell *matCellDef="let row">{{ row.createdAt }}</td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [attr.colspan]="displayedColumns.length" style="text-align:center; padding:24px;">
-              No hay servicios registrados
-            </td>
-          </tr>
-        </table>
-      }
-    </div>
-  `,
-  styles: [`
-    .spinner-container {
-      display: flex;
-      justify-content: center;
-      padding: 48px;
-    }
-  `],
+  templateUrl: './services.component.html',
+  styleUrl: './services.component.scss',
 })
 export class ServicesComponent implements OnInit {
   private serviceService = inject(ServiceService);

@@ -1,0 +1,23 @@
+<mat-toolbar color="primary" class="navbar">
+  <mat-icon class="logo-icon">account_balance</mat-icon>
+  <span class="brand" routerLink="/">Municipality Admin</span>
+
+  <nav class="nav-links">
+    <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon>dashboard</mat-icon>
+      Dashboard
+    </a>
+    <a mat-button routerLink="/municipalities" routerLinkActive="active">
+      <mat-icon>location_city</mat-icon>
+      Municipalidades
+    </a>
+    <a mat-button routerLink="/users" routerLinkActive="active">
+      <mat-icon>people</mat-icon>
+      Usuarios
+    </a>
+    <a mat-button routerLink="/services" routerLinkActive="active">
+      <mat-icon>miscellaneous_services</mat-icon>
+      Servicios
+    </a>
+  </nav>
+</mat-toolbar>
