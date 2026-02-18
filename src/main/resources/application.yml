@@ -1,10 +1,13 @@
 quarkus:
+  application:
+    name: municipality-api
+
   datasource:
     db-kind: postgresql
     username: municipality_user
     password: municipality_password
     jdbc:
-      url: jdbc:postgresql://localhost:5432/municipality_db
+      url: jdbc:postgresql://postgres-municipality:5432/municipality_db
   hibernate-orm:
     database:
       generation: update # Esto hace que se ejecute el import.sql si las tablas cambian o se crean
@@ -16,7 +19,32 @@ quarkus:
     path: banner.txt # Si quieres cambiar el nombre o ruta del archivo
     #enabled: false # Para desactivar el banner por completo
 
+  http:
+    port: 8080
+
+  smallrye-jwt:
+    enabled: true
 mp:
+  jwt: # JWT Configuration (para validar tokens de auth-api)
+    verify:
+      publickey:
+        location: ${JWT_PUBLIC_KEY_LOCATION:classpath:certs/public.pem}
+      issuer: auth-api
+
+#server:
+  #port: 8081
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: municipality-api
+    app-name: municipality-api
+    vip-address: municipality-api
+
   openapi:
     extensions:
       smallrye:

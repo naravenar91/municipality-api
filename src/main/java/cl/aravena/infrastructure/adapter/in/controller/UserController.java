@@ -9,15 +9,20 @@ import cl.aravena.domain.user.port.in.GetUserByIdUseCase;
 import cl.aravena.infrastructure.adapter.in.dto.request.UserRequest;
 import cl.aravena.infrastructure.adapter.in.dto.response.UserResponse;
 import cl.aravena.infrastructure.adapter.out.persistence.mapper.WebUserMapper;
+import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
 
 @Path("/api/user")
 public class UserController {
+
+    @Inject
+    JsonWebToken jwt;
 
     private final CreateUserUseCase create;
     private final GetUserByIdUseCase getById;
@@ -47,6 +52,12 @@ public class UserController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(Long id){
+
+        // EXTRAER DATOS DEL JSON DE AUTH-API
+        String userIdDeAuth = jwt.getClaim("userId");
+        String uuidDeAuth = jwt.getClaim("uuid");
+        System.out.println("Petición autorizada para el userId: " + userIdDeAuth + ", uuidDeAuth:" + uuidDeAuth);
+
         User user = getById.getById(id);
         return Response.ok(webUserMapper.toResponse(user)).build();
     }
