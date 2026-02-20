@@ -2,48 +2,89 @@ quarkus:
   application:
     name: municipality-api
 
-  datasource:
-    db-kind: postgresql
-    username: municipality_user
-    password: municipality_password
-    jdbc:
-      url: jdbc:postgresql://postgres-municipality:5432/municipality_db
-  hibernate-orm:
-    database:
-      generation: update # Esto hace que se ejecute el import.sql si las tablas cambian o se crean
-    sql-load-script: import.sql # Asegura que use este archivo
-    log:
-      sql: true
-
-  banner:
-    path: banner.txt # Si quieres cambiar el nombre o ruta del archivo
-    #enabled: false # Para desactivar el banner por completo
+  log:
+    category:
+      "io.smallrye.jwt":
+        level: DEBUG
 
   http:
     port: 8080
+    cors:
+      ~: true
+      origins: "http://localhost:4200"
+      methods: GET,POST,PUT,DELETE,OPTIONS
+      headers: accept,authorization,content-type,x-requested-with
 
-  smallrye-jwt:
-    enabled: true
+    # ══════════════════════════════════════════════════════════════
+    # SEGURIDAD CENTRALIZADA (Estilo Spring Security)
+    # ══════════════════════════════════════════════════════════════
+    auth:
+      permission:
+        # 1. SEGURIDAD PARA USER: Solo ADMIN puede ver lista o crear, pero todos (logueados) pueden ver su propio ID (GET)
+        user-admin-access:
+          paths: /api/user, /api/user/
+          methods: GET, POST
+          policy: admin-only
+        user-details-access:
+          paths: /api/user/*
+          methods: GET
+          policy: common-policy
+
+        # 2. SEGURIDAD PARA SERVICE: ADMIN y USER pueden ver y crear servicios
+        service-access:
+          paths: /api/service/*, /api/service
+          methods: GET, POST
+          policy: common-policy
+
+        # 3. SEGURIDAD PARA MUNICIPALITY (Lo que pediste anteriormente)
+        municipality-common-access:
+          paths: /api/municipality/*, /api/municipality
+          methods: GET, POST, PUT
+          policy: common-policy
+        municipality-admin-only:
+          paths: /api/municipality/*
+          methods: DELETE
+          policy: admin-only
+
+      policy:
+        common-policy:
+          roles-allowed: [ ADMIN, USER ]
+        admin-only:
+          roles-allowed: [ ADMIN ]
+
+  datasource:
+    db-kind: postgresql
+    username: ${QUARKUS_DATASOURCE_USERNAME:municipality_user}
+    password: ${QUARKUS_DATASOURCE_PASSWORD:municipality_password}
+    jdbc:
+      url: ${QUARKUS_DATASOURCE_JDBC_URL:jdbc:postgresql://localhost:5432/municipality_db}
+
+  hibernate-orm:
+    database:
+      generation: update
+    sql-load-script: import.sql
+    log:
+      sql: false
+
+  banner:
+    path: banner.txt
+
+# ══════════════════════════════════════════════════════════════
+# MICROPROFILE & JWT CONFIGURATION
+# ══════════════════════════════════════════════════════════════
 mp:
-  jwt: # JWT Configuration (para validar tokens de auth-api)
+  jwt:
     verify:
       publickey:
-        location: ${JWT_PUBLIC_KEY_LOCATION:classpath:certs/public.pem}
+        location: public.pem
       issuer: auth-api
+    token:
+      header: Authorization
 
-#server:
-  #port: 8081
-
-eureka:
-  client:
-    enabled: true
-    service-url:
-      defaultZone: http://eureka-server:8761/eureka/
-  instance:
-    prefer-ip-address: true
-    hostname: municipality-api
-    app-name: municipality-api
-    vip-address: municipality-api
+smallrye:
+  jwt:
+    path:
+      groups: roles # Esto busca el array "roles" en el JWT que genera tu auth-api
 
   openapi:
     extensions:
@@ -51,4 +92,4 @@ eureka:
         info:
           title: "Municipality API"
           version: "1.0.0"
-          description: "API for the management of municipalities and municipal services that residents can choose when registering in this application"
+          description: "API for the management of municipalities"
